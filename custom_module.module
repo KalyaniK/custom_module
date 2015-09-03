@@ -1,0 +1,54 @@
+<?php
+
+
+/*
+ * Implements hook_menu().
+ */
+function custom_module_menu(){
+  $items['page_json/%api_key/%node'] = array(
+    'title' => 'JSON Node',
+    'description' => 'Returns node in JSON form.',
+    'page callback' => 'api_key_node',
+    'page arguments' => array(2, 3),
+    'access arguments' => array('access administration pages'),
+  );  
+  return $items;
+}
+
+
+function api_key_node($apikey, $nid) {
+
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function custom_module_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'system_site_information_settings') {
+    $form['custom_module'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Site API Key'),
+    );
+
+    $form['custom_module']['siteapikey'] = array(
+      '#type' => 'textfield',
+      '#title' => t('API Key'),
+      '#default_value' => variable_get('siteapikey'),
+      '#attributes' => array(
+        'placeholder' => t('No API Key yet'),
+      ),
+      '#description' => t('API key for your website.'),
+    );
+
+    $form['actions']['submit']['#value'] = t('Update Configuration');
+    $form['#submit'][] = 'custom_module_submit';
+  }
+}
+
+/**
+ * Additional handler for site information settings form submit.
+ */
+function custom_module_submit($form, &$form_state) {
+  $api_key = $form_state['values']['siteapikey'];
+  variable_set('siteapikey', $api_key);
+}

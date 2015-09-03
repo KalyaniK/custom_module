@@ -1,0 +1,5 @@
+name = Custom Module
+description = Provides API key settings for website.
+core = 7.x
+package = Custom
+configure = admin/config/system/site-information
