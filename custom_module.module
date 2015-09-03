@@ -1,23 +1,29 @@
 <?php
 
+/**
+ * @file
+ *  Provides site API key settings.
+ */
 
 /*
  * Implements hook_menu().
  */
-function custom_module_menu(){
-  $items['page_json/%api_key/%node'] = array(
+function custom_module_menu() {
+  $items['page_json/%/%node'] = array(
     'title' => 'JSON Node',
     'description' => 'Returns node in JSON form.',
     'page callback' => 'api_key_node',
-    'page arguments' => array(2, 3),
-    'access arguments' => array('access administration pages'),
-  );  
+    'page arguments' => array(1, 2),
+    'access callback' => TRUE,
+  );
   return $items;
 }
 
-
-function api_key_node($apikey, $nid) {
-
+/**
+ * Function to display JSON data on custom URL.
+ */
+function api_key_node($key, $node) {
+  return drupal_json_output($node);
 }
 
 /**
